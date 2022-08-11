@@ -1,8 +1,10 @@
 const express = require('express');
 const getDatabases = require('../controllers/getDatabases');
 const saveDatabase = require('../controllers/saveDatabase');
+const saveContent = require('../controllers/saveContent');
 const getPages = require('../controllers/getPages');
 const savePage = require('../controllers/savePage');
+const getChildren = require('../controllers/getChildren')
 const router = express.Router();
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
@@ -28,7 +30,7 @@ router.get('/getPages',async(req,res)=>{
     for (var i = 0;i<n;i++){
         await savePage(data[i]);
     }
-    res.send("Pages Saved!");
+    res.send(data);
 })
 
 router.post('/savePages',async(req,res)=>{
@@ -40,4 +42,18 @@ router.post('/savePages',async(req,res)=>{
     res.send("Pages Saved!");
 })
 
+router.get('/getChildren', async (req,res)=>{
+    const ID = req.body.id;
+    const data = await getChildren(ID);
+    res.send(data.results);
+})
+
+router.post('/saveContent', async(req,res)=>{
+    const data = await getPages();
+    const n = data.length;
+    for (var i = 0;i<n;i++){
+        await saveContent(data[i].id);
+    }
+    res.send("Content Saved!");   
+})
 module.exports = router;

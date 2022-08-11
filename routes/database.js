@@ -24,7 +24,54 @@ router.get('/checkpg', async(req,res)=>{
 });
 
 router.get('/pgParen',async(req,res)=>{
-    var sql = "SELECT ID,Parent FROM Internship_Task.Page;";
+    var sql = "SELECT ID,parentType FROM Internship_Task.Page;";
+    connection.execute(sql,function (err,result){
+        if(err) throw err;
+        res.send(result);
+    })
+})
+
+router.delete('/delPages', async(req,res)=>{
+    var sql = "DELETE FROM Internship_Task.Page;"
+    connection.execute(sql,function (err,result){
+        if(err) throw err;
+        res.send(result);
+    })
+})
+
+router.get('/indPages',async(req,res)=>{
+    const l = await getPgParen();
+    n = l.length;
+    arr = [];
+    for(var i = 0;i<n;i++){
+        if ((l[i].parentType) == "workspace"){
+            arr.push(l[i])
+        }
+    }
+    res.send(arr);
+})
+
+router.get('/getDatabases',async(req,res)=>{
+    var sql = "SELECT * from `Internship_Task`.`Databases`;"
+    connection.execute(sql,function (err,result){
+        if(err) throw err;
+        res.send(result);
+    })
+})
+
+router.get('/getConPages',async(req,res)=>{
+    var ID = req.body.id;
+    var sql = "SELECT * from `Internship_Task`.`Page` WHERE parentID = '"+ID+"';";
+    connection.execute(sql,function (err,result){
+        if(err) throw err;
+        console.log(result);
+        res.send(result);
+    })
+})
+
+router.get('/getPara', async(req,res)=>{
+    var ID = req.body.id;
+    var sql = "SELECT * from `Internship_Task`.`para` WHERE parentID = '"+ID+"';";
     connection.execute(sql,function (err,result){
         if(err) throw err;
         res.send(result);
@@ -32,5 +79,4 @@ router.get('/pgParen',async(req,res)=>{
 })
 
 
-
-module.exports = router;
+module.exports = router ;

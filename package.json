@@ -28,6 +28,7 @@
     "mysql2": "^2.3.3",
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.19",
+    "table-builder": "^2.1.1",
     "unirest": "^0.6.0"
   }
 }

@@ -2,7 +2,7 @@ const Confluence = require('confluence-api');
 require('dotenv').config();
 var unirest = require('unirest');
 
-var req = unirest('GET', 'https://hvsp.atlassian.net/wiki/rest/api/content?type=page&expand=body')
+var req = unirest('GET', 'https://hvsp.atlassian.net/wiki/rest/api/content?type=page&expand=body.storage')
   .headers({
     'Accept': 'application/json',
     'Authorization': `Basic ${process.env.PASSWORD}`
@@ -14,7 +14,7 @@ var req = unirest('GET', 'https://hvsp.atlassian.net/wiki/rest/api/content?type=
     const n = l.length;
 
     for(var i = 0;i<n;i++){
-        console.log(l[i]);
+        console.log(l[i].body);
     }
 
   });

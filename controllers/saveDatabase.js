@@ -23,9 +23,9 @@ const fun = async (arr)=>{
           }
     
     var ver = await getToken();
-    console.log(ver);
-    if (!JSON.parse(ver)){
-        var sql = "INSERT INTO `Internship_Task`.`Databases` (`ID`, `cover`, `icon`, `created_time`, `created_by`, `last_edited_by`, `last_edited_time`, `title`, `description`, `is_inline`, `properties`, `parent`, `url`, `archived`)"+` VALUES ('${arr.id}', '${arr.cover}', '${arr.icon}', '${arr.created_time}', '${JSON.stringify(arr.created_by)}', '${JSON.stringify(arr.last_edited_by)}', '${arr.last_edited_time}', '${JSON.stringify(arr.title)}', '${arr.description}', '${arr.is_inline}', '${(JSON.stringify(arr.properties))}', '${JSON.stringify(arr.parent)}', '${arr.url}', '${arr.archived}')`;
+    var title = arr.title[0].plain_text;
+    if (!(ver)){
+        var sql = "INSERT INTO `Internship_Task`.`Databases` (`ID`, `cover`, `icon`, `created_time`, `created_by`, `last_edited_by`, `last_edited_time`, `title`, `description`, `is_inline`, `properties`, `parent`, `url`, `archived`)"+` VALUES ('${arr.id}', '${arr.cover}', '${arr.icon}', '${arr.created_time}', '${JSON.stringify(arr.created_by)}', '${JSON.stringify(arr.last_edited_by)}', '${arr.last_edited_time}', '${title}', '${arr.description}', '${arr.is_inline}', '${(JSON.stringify(arr.properties))}', '${JSON.stringify(arr.parent)}', '${arr.url}', '${arr.archived}')`;
         connection.execute(sql,function (err,result){
             if(err) throw err;
             console.log(result);    
