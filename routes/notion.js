@@ -52,8 +52,10 @@ router.post('/saveContent', async(req,res)=>{
     const data = await getPages();
     const n = data.length;
     for (var i = 0;i<n;i++){
+        console.log(data[i].id)
         await saveContent(data[i].id);
     }
     res.send("Content Saved!");   
 })
+
 module.exports = router;

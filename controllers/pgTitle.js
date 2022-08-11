@@ -2,7 +2,6 @@ const unirest = require('unirest');
 require('dotenv').config();
 
 const fun = async (id)=>{
-    console.log("inside");
     function getToken() {
         return new Promise((resolve, reject) => {
             const url = `https://api.notion.com/v1/pages/${id}/properties/title`;
@@ -22,10 +21,16 @@ const fun = async (id)=>{
             });
         })
       }
-    
+
     var l = await getToken()
-    console.log(l.results[0].title.plain_text);
-    return(l.results[0].title.plain_text);
+    console.log(l);
+    if (l.results.length!=0){
+      return(l.results[0].title.plain_text);
+    }
+    else{
+      return " ";
+    }
+    
 }
 
 module.exports = fun;

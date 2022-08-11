@@ -64,7 +64,6 @@ router.get('/getConPages',async(req,res)=>{
     var sql = "SELECT * from `Internship_Task`.`Page` WHERE parentID = '"+ID+"';";
     connection.execute(sql,function (err,result){
         if(err) throw err;
-        console.log(result);
         res.send(result);
     })
 })

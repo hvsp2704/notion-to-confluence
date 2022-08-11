@@ -1,7 +1,6 @@
 const unirest = require('unirest');
 
 const fun = async (id) => {
-    console.log(id)
     function getToken() {
         return new Promise((resolve, reject) => {
           unirest
