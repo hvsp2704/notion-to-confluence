@@ -10,4 +10,4 @@ app.use('/notion',(require('./routes/notion')));
 app.use('/database',(require('./routes/database')));
 app.use('/confluence',(require('./routes/confluence')))
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(PORT, () => console.warn(`Server running on port ${PORT}`))

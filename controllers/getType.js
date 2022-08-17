@@ -20,33 +20,44 @@ const fun = async (id)=>{
         var l = await getToken();
         var p_id = l[0].ID;
         var alpha = (JSON.parse(l[0].properties))
-        var d_id = alpha.Date.id;
+        console.log(alpha);
 
-        function getTkn() {
-            var url = `https://api.notion.com/v1/pages/${(p_id)}/properties/${(d_id)}`
-            console.log(url)
-            return new Promise((resolve, reject) => {
+        if("Date" in alpha){
+          var d_id = alpha.Date.id;
 
-              unirest
-                .get(url)
-                .headers({
-                    Accept: 'application/json',
-                    'Notion-Version': '2022-06-28',
-                    Authorization: `Bearer ${process.env.NOTION_KEY}`
-                  })
-                .end(function (response) {
-                  if (response.error) {
-                    return reject(response.error)
-                  }
-                  return resolve(response.body);
-                });
-            })
+          function getTkn() {
+              var url = `https://api.notion.com/v1/pages/${(p_id)}/properties/${(d_id)}`
+              console.log(url)
+              return new Promise((resolve, reject) => {
+
+                unirest
+                  .get(url)
+                  .headers({
+                      Accept: 'application/json',
+                      'Notion-Version': '2022-06-28',
+                      Authorization: `Bearer ${process.env.NOTION_KEY}`
+                    })
+                  .end(function (response) {
+                    if (response.error) {
+                      return reject(response.error)
+                    }
+                    return resolve(response.body);
+                  });
+              })
+            }
+          var prop = await getTkn()
+          if (prop.date == null){
+              return "table"
+          }else{
+              return "calendar"}
           }
-        var prop = await getTkn()
-        if (prop.date == null){
-            return false
-        }else{
-            return true}
+          else{
+            return "list"
+          }
+
+
+
+        
 
 
 

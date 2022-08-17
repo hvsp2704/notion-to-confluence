@@ -4,6 +4,8 @@ const pgTitle = require('./pgTitle');
 const mkCon = require('./makeContent');
 const getPara = require('./getPara');
 const makePage = require('./makePage');
+const makeList = require('./makeList');
+
 const fun = async (arr,x)=>{
     function getToken() {
         return new Promise((resolve, reject) => {
@@ -23,17 +25,18 @@ const fun = async (arr,x)=>{
           }
         var l = await getToken();
         var n = l.length;
-        if (x){
+        if (x=="calendar"){
             var headers = { "name" : "Event", "date": "Date", "content": "Description" };
-        }else{
-            var headers = { "name" : "Event", "content": "Description" };
+        }else if(x=="table" || x == "list"){
+            var headers = { "name" : "Name", "content": "Content" };
         }
+        if(x!="list"){
         var data = [];
         for (var i = 0; i<n; i++){
 
             var p_id = l[i].ID;
             var alpha = (JSON.parse(l[i].properties))
-            var d_id = alpha.Date.id;
+            if(x == "calendar"){var d_id = alpha.Date.id;
     
             function getTkn() {
                 return new Promise((resolve, reject) => {
@@ -53,11 +56,11 @@ const fun = async (arr,x)=>{
                     });
                 })
               }
-            var prop = await getTkn()
+            var prop = await getTkn()}
             var paralist = await getPara(p_id);
             var content = await mkCon(paralist);
 
-            if (x){
+            if (x=="calendar"){
                 var dic = {
                     "date" : prop.date.start,
                     "name" : await pgTitle(p_id),
@@ -65,7 +68,6 @@ const fun = async (arr,x)=>{
                 }
             }else{
                 var dic = {
-                    "date" : prop.date,
                     "name" : await pgTitle(p_id),
                     "content" : content
                 }
@@ -76,7 +78,22 @@ const fun = async (arr,x)=>{
         var newContent = (new table({'class': 'some-table'}))
                             .setHeaders(headers) 
                             .setData(data) 
-                            .render()
+                            .render()}
+        else{
+          var data = [];
+          for (var i = 0; i<n; i++){
+
+            var p_id = l[i].ID;
+            var paralist = await getPara(p_id);
+            var dic = {
+              title : await pgTitle(p_id),
+              content : paralist
+            }
+            data.push(dic)
+          }
+
+          var newContent = await makeList(data);
+        }
         
         const something = await makePage(arr.title,newContent);
         return 0;

@@ -34,14 +34,9 @@ const fun = async (arr)=>{
       var sql = "INSERT INTO `Internship_Task`.`Page` (`ID`, `created_time`, `last_edited_time`, `created_by`, `cover`, `icon`, `parentType`,`parentID`, `archived`, `properties`) VALUES ('"+ arr.id +"', '"+arr.created_time+"', '"+arr.last_edited_time+"', '"+JSON.stringify(arr.created_by)+"', '"+JSON.stringify(arr.cover)+"', '"+JSON.stringify(arr.icon)+"', '"+arr.parent.type+"', '"+ID+"','"+arr.archived+"', '"+JSON.stringify(arr.properties)+"')";
       
       connection.execute(sql,function (err,result){
-          if(err) throw err;
-          console.log(result);    
+          if(err) throw err;   
       })
     };
-
-
-    
-
 }
 
 module.exports = fun;

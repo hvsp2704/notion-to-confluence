@@ -23,7 +23,6 @@ const fun = async (id)=>{
       }
 
     var l = await getToken()
-    console.log(l);
     if (l.results.length!=0){
       return(l.results[0].title.plain_text);
     }

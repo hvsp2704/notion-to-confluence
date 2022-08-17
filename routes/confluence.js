@@ -12,6 +12,9 @@ const getType = require('../controllers/getType');
 const res = require('express/lib/response');
 router.use(bodyParser.json());
 require('dotenv').config();
+const delPages = require('../controllers/delPages');
+const delDatabases = require('../controllers/delDatabases');
+const delParas = require('../controllers/delParas');
 
 router.post('/uploadIndPages',async(req,res)=>{
     const arr = await getIndPages();
@@ -54,7 +57,16 @@ router.post('/uploadDatabases',async(req,res)=>{
 })
 
 router.post('/toConfluence',async(req,res)=>{
+
+    //Phase 1: Calling data from notion and saving it.
     
+    //To delete data of the previous call
+    var x = await delParas();
+    var x = await delDatabases();
+    var x = await delPages();
+
+
+    //Save all the pages of the notion workspace
     function hOne() {
       return new Promise((resolve, reject) => {
         unirest
@@ -68,6 +80,9 @@ router.post('/toConfluence',async(req,res)=>{
           })
         }
       var l = await hOne();
+
+
+    //Save all the databases(containers of pages) of the notion workspace
     function hTwo() {
       return new Promise((resolve, reject) => {
         unirest
@@ -81,6 +96,9 @@ router.post('/toConfluence',async(req,res)=>{
           })
         }
         var l = await hTwo();
+    
+
+    //Save content of all the pages
     function hThree() {
           return new Promise((resolve, reject) => {
             unirest
@@ -94,6 +112,11 @@ router.post('/toConfluence',async(req,res)=>{
               })
             }
           var l = await hThree();
+
+    //Phase 2: Calling data from SQL and uploading to confluence
+
+
+    //Uploads pages are not part of any database, independent pages.
     function getToken() {
         return new Promise((resolve, reject) => {
           unirest
@@ -107,6 +130,7 @@ router.post('/toConfluence',async(req,res)=>{
             })
           }
           var l = await getToken();
+    //Uploads all the databses and their pages with their content.
     function getTkn() {
       return new Promise((resolve, reject) => {
         unirest

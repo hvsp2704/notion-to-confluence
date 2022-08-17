@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const connection = require('../connection');
 const getPgParen = require('../controllers/getPgParen');
 router.use(bodyParser.json());
+const delPages = require('../controllers/delPages');
+const delDatabases = require('../controllers/delDatabases');
+const delParas = require('../controllers/delParas');
 
 router.get('/checkdb', async(req,res)=>{
     const ID = req.body.id;
@@ -32,11 +35,25 @@ router.get('/pgParen',async(req,res)=>{
 })
 
 router.delete('/delPages', async(req,res)=>{
-    var sql = "DELETE FROM Internship_Task.Page;"
-    connection.execute(sql,function (err,result){
-        if(err) throw err;
-        res.send(result);
-    })
+    var x = await delPages();
+    res.send("Pages Deleted!")
+})
+
+router.delete('/delDatabases', async(req,res)=>{
+    var x = await delDatabases();
+    res.send("Databases Deleted!")
+})
+
+router.delete('/delParas', async(req,res)=>{
+    var x = await delParas();
+    res.send("Paragraphs Deleted!")
+})
+
+router.delete('/clearAll', async(req,res)=>{
+    var x = await delParas();
+    var x = await delDatabases();
+    var x = await delPages();
+    res.send("Backend Database Clear")
 })
 
 router.get('/indPages',async(req,res)=>{

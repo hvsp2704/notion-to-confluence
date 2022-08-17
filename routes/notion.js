@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 require('dotenv').config();
 
-router.get('/databases', async(req,res)=>{
+router.get('/getDatabases', async(req,res)=>{
     const data = await getDatabases();
     res.send(data);
 });
